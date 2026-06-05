@@ -47,6 +47,20 @@ Diese Subdomain wird aktuell als geschützte Vorschau für das Escape-Game genut
 
 ## Lokaler Start auf dem VPS
 
+### MVP-Deployment
+
+Die voll funktionsfähige Docker-/PostgreSQL-Version läuft auf dem VPS hinter Nginx Proxy Manager/Authelia unter:
+
+```text
+https://escape-game.example.com/
+```
+
+Betriebsdoku:
+
+```text
+docs/mvp_deployment.md
+```
+
 ### One-Click Self-Hosting mit Docker Compose
 
 ```bash

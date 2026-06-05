@@ -1,0 +1,11 @@
+services:
+  app:
+    networks:
+      - frontend
+      - backend
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: my-proxy-network
