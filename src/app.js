@@ -301,16 +301,21 @@ function startGame() {
 }
 
 function resetGame() {
+  const confirmed = window.confirm("Neue Session starten? Teamname, gelöste Stationen, Hinweise und Timer werden zurückgesetzt.");
+  if (!confirmed) return;
+
   Object.assign(state, {
     started: false,
     teamName: "",
     currentStationId: null,
     solved: [],
     shownHints: {},
+    facilitatorUnlocked: false,
     timerSeconds: 60 * 60,
-    timerRunning: false
+    timerRunning: false,
+    timerStartedAt: null
   });
-  persistState();
+  localStorage.removeItem(STORAGE_KEY);
   window.location.reload();
 }
 
@@ -399,6 +404,8 @@ function bindEvents() {
   $("#outroAudioButton").addEventListener("click", () => playAudio("99_outro.mp3"));
   $("#finishButton").addEventListener("click", renderFinish);
   $("#backToGameButton").addEventListener("click", showGame);
+  $("#newSessionButton").addEventListener("click", resetGame);
+  $("#newSessionFromFinishButton").addEventListener("click", resetGame);
   $("#resetViewButton").addEventListener("click", () => {
     state.currentStationId = data.stations.find((station) => isUnlocked(station))?.id || data.stations[0].id;
     renderStation(state.currentStationId);

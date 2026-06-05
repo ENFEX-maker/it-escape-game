@@ -8,6 +8,8 @@ const stations = readJson('src/data/stations.json');
 const hints = readJson('src/data/hints.json');
 const audio = readJson('src/data/audio.json');
 const facilitator = readJson('src/data/facilitator.json');
+const indexHtml = readFileSync(join(root, 'src/index.html'), 'utf8');
+const appJs = readFileSync(join(root, 'src/app.js'), 'utf8');
 
 const errors = [];
 const fail = (message) => errors.push(message);
@@ -49,6 +51,12 @@ for (const path of [
 ]) {
   if (!existsSync(join(root, path))) fail(`Datei fehlt: ${path}`);
 }
+
+if (!indexHtml.includes('id="newSessionButton"')) fail('Game-UI braucht sichtbaren Button #newSessionButton zum Session-Reset');
+if (!indexHtml.includes('id="newSessionFromFinishButton"')) fail('Abschlussseite braucht Button #newSessionFromFinishButton zum Session-Reset');
+if (!appJs.includes('localStorage.removeItem(STORAGE_KEY)')) fail('resetGame muss gespeicherte Session aus localStorage entfernen');
+if (!appJs.includes('facilitatorUnlocked: false')) fail('resetGame muss auch den Spielleiter-Freischaltstatus zurücksetzen');
+if (!appJs.includes('newSessionButton')) fail('Reset-Button im Spiel muss in app.js gebunden sein');
 
 if (errors.length) {
   console.error('Smoke check failed:');
