@@ -57,7 +57,10 @@ if (!indexHtml.includes('id="newSessionFromFinishButton"')) fail('Abschlussseite
 if (!appJs.includes('localStorage.removeItem(STORAGE_KEY)')) fail('resetGame muss gespeicherte Session aus localStorage entfernen');
 if (!appJs.includes('facilitatorUnlocked: false')) fail('resetGame muss auch den Spielleiter-Freischaltstatus zurücksetzen');
 if (!appJs.includes('newSessionButton')) fail('Reset-Button im Spiel muss in app.js gebunden sein');
-if (!appJs.includes('CUSTOM_CONTENT_KEY')) fail('Admin-Editor braucht eigenen LocalStorage-Key für bearbeitete Inhalte');
+if (!appJs.includes('API_CONTENT_PATH')) fail('Frontend muss Inhalte bevorzugt über /api/content laden');
+if (!appJs.includes('apiAvailable')) fail('Frontend muss API-Betrieb vom statischen Fallback unterscheiden');
+if (!appJs.includes('/api/admin/stations/')) fail('Admin-Editor muss Stationsänderungen per API speichern können');
+if (!appJs.includes('CUSTOM_CONTENT_KEY')) fail('Admin-Editor braucht LocalStorage-Fallback für statischen Betrieb');
 if (!appJs.includes('renderAdminEditor')) fail('Admin-Editor muss renderAdminEditor implementieren');
 if (!appJs.includes('saveAdminStationEdits')) fail('Admin-Editor muss Stationsänderungen speichern können');
 if (!appJs.includes('exportAdminContent')) fail('Admin-Editor muss bearbeitete Inhalte exportieren können');

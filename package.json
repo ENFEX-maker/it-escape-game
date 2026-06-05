@@ -1,0 +1,17 @@
+{
+  "name": "it-escape-game",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hostable IT escape game with PostgreSQL-backed admin editor.",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs && node tests/smoke-check.mjs",
+    "smoke": "node tests/smoke-check.mjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {}
+}

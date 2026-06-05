@@ -1,0 +1,36 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Runtime / logs
+logs/
+*.log
+
+# Test/build artifacts
+coverage/
+.nyc_output/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local scratch
+*.tar.gz

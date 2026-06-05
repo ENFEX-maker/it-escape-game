@@ -20,14 +20,14 @@ Schüler*innen ab ca. 14 Jahren, Praktikumsgruppen, Ausbildungsmessen, Tag der o
 
 ## Technischer Ansatz
 
-Statische Web-App ohne Backend:
+Self-hostbare Web-App mit optionalem statischem Fallback:
 
-- Plain HTML
-- CSS
-- Vanilla JavaScript
-- JSON-Datenmodell
-- lokal per einfachem HTTP-Server testbar
-- später per Nginx auf Ubuntu/VPS hostbar
+- Node.js/Express Backend
+- PostgreSQL als persistente Datenbank für Admin-Editor-Inhalte
+- statisches Frontend aus `src/`
+- JSON-Dateien bleiben als Seed/Fallback erhalten
+- Docker Compose für App + Datenbank
+- lokal weiterhin per einfachem HTTP-Server testbar, dann aber ohne DB-Speicherung
 
 ## Rechtlicher Hinweis
 
@@ -47,16 +47,61 @@ Diese Subdomain wird aktuell als geschützte Vorschau für das Escape-Game genut
 
 ## Lokaler Start auf dem VPS
 
+### One-Click Self-Hosting mit Docker Compose
+
+```bash
+cd /root/projects/it-escape-game
+cp .env.example .env
+# Wichtig: POSTGRES_PASSWORD und ADMIN_PIN in .env ändern
+docker compose up -d --build
+```
+
+Dann öffnen:
+
+```text
+http://127.0.0.1:8080/
+```
+
+Beim ersten Start legt die App das Datenbankschema an und importiert die Inhalte aus `src/data/*.json`. Danach ist PostgreSQL die führende Datenquelle für Admin-Editor-Änderungen.
+
+Healthcheck:
+
+```bash
+curl http://127.0.0.1:8080/api/health
+```
+
+Logs:
+
+```bash
+docker compose logs -f app
+```
+
+Stoppen:
+
+```bash
+docker compose down
+```
+
+Datenbankdaten bleiben im Docker-Volume `it-escape-game_postgres-data` erhalten. Komplett zurücksetzen:
+
+```bash
+docker compose down -v
+```
+
+### Statischer Fallback ohne DB
+
 ```bash
 cd /root/projects/it-escape-game
 python3 -m http.server 8080
 ```
 
-Dann über SSH-Portforwarding oder direkt auf dem VPS öffnen:
+Dann öffnen:
 
 ```text
 http://127.0.0.1:8080/src/
 ```
+
+Im statischen Fallback funktioniert das Spiel weiter, aber Admin-Editor-Änderungen werden nur lokal im Browser gespeichert.
 
 ## Smoke-Test
 
@@ -124,17 +169,16 @@ Der Spielleiter-Modus nutzt im MVP einen einfachen PIN als Sichtschutz:
 1984
 ```
 
-Das ist kein echter Sicherheitsmechanismus. Die App ist statisch; wer den Quellcode öffnet, kann Daten einsehen. Für Veranstaltungen reicht das als Sichtschutz am Gerät.
+Das ist kein echter Sicherheitsmechanismus, sondern ein einfacher Admin-Schutz. Im Docker-Setup wird der PIN über `ADMIN_PIN` in `.env` gesetzt. Im statischen Fallback kommt der PIN aus `src/data/facilitator.json`.
 
 Nach dem Freischalten kann im Spielleiter-Dialog der Admin-Editor geöffnet werden. Dort lassen sich Fragen, Aufgaben, Codes, Hinweise, Lernpunkte, Berufsbezüge, Materialien und Spielleiter-Lösungen bearbeiten.
 
 Wichtig:
 
-- Änderungen werden lokal im Browser gespeichert (`localStorage`).
-- Sie gelten sofort für diese Browser-Session und bleiben nach Neuladen erhalten.
-- Über „Bearbeitete Inhalte exportieren“ kann eine JSON-Datei gesichert werden.
-- Für dauerhafte Projektänderungen muss diese JSON-Datei später in die Repository-Dateien übernommen werden.
-- „Bearbeitete Inhalte zurücksetzen“ löscht nur die lokalen Admin-Anpassungen, nicht den Quellcode.
+- Im Docker-/PostgreSQL-Betrieb speichert der Admin-Editor serverseitig in der Datenbank.
+- Im statischen Fallback speichert der Admin-Editor nur lokal im Browser.
+- `src/data/*.json` bleiben als initialer Seed und Fallback erhalten.
+
 
 ## Audio
 

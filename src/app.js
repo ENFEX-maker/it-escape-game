@@ -6,6 +6,7 @@ const DATA_PATHS = {
 };
 
 const AUDIO_BASE = "../public/audio/";
+const API_CONTENT_PATH = "/api/content";
 const STORAGE_KEY = "itEscapeGameState.v1";
 const CUSTOM_CONTENT_KEY = "itEscapeGameContent.v1";
 
@@ -29,6 +30,8 @@ const data = {
 };
 
 let timerInterval = null;
+let apiAvailable = false;
+let adminPinMemory = "";
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -54,6 +57,19 @@ async function loadJson(path) {
 }
 
 async function loadData() {
+  try {
+    const apiContent = await loadJson(API_CONTENT_PATH);
+    data.stations = apiContent.stations.sort((a, b) => a.order - b.order);
+    data.hints = apiContent.hints;
+    data.audio = apiContent.audio;
+    data.facilitator = apiContent.facilitator;
+    apiAvailable = true;
+    return;
+  } catch (error) {
+    apiAvailable = false;
+    console.warn("API nicht erreichbar, nutze statische JSON-Daten.", error);
+  }
+
   const [stations, hints, audio, facilitator] = await Promise.all([
     loadJson(DATA_PATHS.stations),
     loadJson(DATA_PATHS.hints),
@@ -377,6 +393,7 @@ function unlockFacilitator() {
   const pin = $("#facilitatorPin").value.trim();
   const feedback = $("#pinFeedback");
   if (pin === data.facilitator.pin) {
+    adminPinMemory = pin;
     state.facilitatorUnlocked = true;
     persistState();
     feedback.textContent = "";
@@ -395,7 +412,7 @@ function renderAdminEditor() {
       <div class="section-title-row">
         <div>
           <h3 id="adminEditorHeading">Admin-Editor</h3>
-          <p>Änderungen werden lokal in diesem Browser gespeichert. Über „Exportieren“ kannst du die bearbeiteten JSON-Daten sichern oder später in die Projektdateien übernehmen lassen.</p>
+          <p>${apiAvailable ? "Änderungen werden in der serverseitigen PostgreSQL-Datenbank gespeichert und sind danach für alle Geräte aktiv." : "Offline-/Statischer Modus: Änderungen werden lokal in diesem Browser gespeichert. Über „Exportieren“ kannst du die bearbeiteten JSON-Daten sichern."}</p>
         </div>
       </div>
       <div class="button-row">
@@ -463,7 +480,7 @@ function renderAdminStationForm(station) {
   `;
 }
 
-function saveAdminStationEdits(stationId) {
+async function saveAdminStationEdits(stationId) {
   const form = Array.from(document.querySelectorAll("[data-admin-station]")).find((candidate) => candidate.getAttribute("data-admin-station") === stationId);
   const station = stationById(stationId);
   if (!form || !station) return;
@@ -488,7 +505,7 @@ function saveAdminStationEdits(stationId) {
     return;
   }
 
-  Object.assign(station, {
+  const patch = {
     title: value("title"),
     topic: value("topic"),
     code,
@@ -497,9 +514,55 @@ function saveAdminStationEdits(stationId) {
     task: value("task"),
     materials,
     learningPoint: value("learningPoint"),
-    careerLink: value("careerLink")
+    careerLink: value("careerLink"),
+    hints: field("hints").value.split("\n").map((hint) => hint.trim()).filter(Boolean),
+    shortSolution: value("shortSolution"),
+    explanation: value("explanation")
+  };
+
+  if (apiAvailable) {
+    try {
+      const response = await fetch(`/api/admin/stations/${encodeURIComponent(stationId)}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-pin": adminPinMemory || $("#facilitatorPin").value.trim()
+        },
+        body: JSON.stringify(patch)
+      });
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: "Speichern fehlgeschlagen." }));
+        throw new Error(error.error || "Speichern fehlgeschlagen.");
+      }
+      const updated = await response.json();
+      data.stations = updated.stations.sort((a, b) => a.order - b.order);
+      data.hints = updated.hints;
+      data.audio = updated.audio;
+      data.facilitator = updated.facilitator;
+      persistState();
+      renderStationList();
+      if (state.currentStationId) renderStation(state.currentStationId);
+      renderAdminEditor();
+      showToast("Station in PostgreSQL gespeichert. Die Änderung ist für alle Geräte aktiv.");
+      return;
+    } catch (error) {
+      showToast(`DB-Speichern fehlgeschlagen: ${error.message}`);
+      return;
+    }
+  }
+
+  Object.assign(station, {
+    title: patch.title,
+    topic: patch.topic,
+    code: patch.code,
+    estimatedMinutes: patch.estimatedMinutes,
+    story: patch.story,
+    task: patch.task,
+    materials: patch.materials,
+    learningPoint: patch.learningPoint,
+    careerLink: patch.careerLink
   });
-  data.hints[stationId] = field("hints").value.split("\n").map((hint) => hint.trim()).filter(Boolean);
+  data.hints[stationId] = patch.hints;
 
   let solution = solutionByStationId(stationId);
   if (!solution) {
@@ -508,8 +571,8 @@ function saveAdminStationEdits(stationId) {
   }
   Object.assign(solution, {
     code,
-    shortSolution: value("shortSolution"),
-    explanation: value("explanation")
+    shortSolution: patch.shortSolution,
+    explanation: patch.explanation
   });
 
   persistCustomContent();
