@@ -137,7 +137,8 @@ button.ghost {
   background: transparent;
 }
 
-input {
+input,
+textarea {
   width: 100%;
   min-height: var(--touch-min);
   border: 1px solid var(--border);
@@ -148,17 +149,26 @@ input {
   font-size: 1rem;
 }
 
-input::placeholder {
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+input::placeholder,
+textarea::placeholder {
   color: rgba(184, 202, 216, 0.65);
 }
 
-input:focus-visible {
+input:focus-visible,
+textarea:focus-visible {
   border-color: var(--accent);
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
-input:disabled {
+input:disabled,
+textarea:disabled {
   opacity: 0.65;
   cursor: not-allowed;
 }
@@ -623,6 +633,39 @@ dialog::backdrop {
   font-variant-numeric: tabular-nums;
 }
 
+.admin-editor {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  background: rgba(61, 184, 255, 0.06);
+}
+
+.admin-station-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-station-form {
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.admin-station-form h4 {
+  margin: 0;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
 @media (max-width: 1024px) {
   .game-grid {
     grid-template-columns: minmax(220px, 280px) 1fr;
@@ -643,7 +686,8 @@ dialog::backdrop {
     min-height: auto;
   }
 
-  .code-check {
+  .code-check,
+  .admin-grid {
     grid-template-columns: 1fr;
   }
 

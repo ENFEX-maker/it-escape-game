@@ -57,6 +57,16 @@ if (!indexHtml.includes('id="newSessionFromFinishButton"')) fail('Abschlussseite
 if (!appJs.includes('localStorage.removeItem(STORAGE_KEY)')) fail('resetGame muss gespeicherte Session aus localStorage entfernen');
 if (!appJs.includes('facilitatorUnlocked: false')) fail('resetGame muss auch den Spielleiter-Freischaltstatus zurücksetzen');
 if (!appJs.includes('newSessionButton')) fail('Reset-Button im Spiel muss in app.js gebunden sein');
+if (!appJs.includes('CUSTOM_CONTENT_KEY')) fail('Admin-Editor braucht eigenen LocalStorage-Key für bearbeitete Inhalte');
+if (!appJs.includes('renderAdminEditor')) fail('Admin-Editor muss renderAdminEditor implementieren');
+if (!appJs.includes('saveAdminStationEdits')) fail('Admin-Editor muss Stationsänderungen speichern können');
+if (!appJs.includes('exportAdminContent')) fail('Admin-Editor muss bearbeitete Inhalte exportieren können');
+if (!appJs.includes('resetAdminContent')) fail('Admin-Editor muss bearbeitete Inhalte zurücksetzen können');
+if (!appJs.includes('applyCustomContent')) fail('Admin-Editor muss gespeicherte Inhalte beim Laden anwenden');
+if (!appJs.includes('JSON.parse')) fail('Admin-Editor muss Material-JSON validieren/parsen können');
+if (!appJs.includes('<strong>${escapeHtml(station.title)}</strong>')) fail('Stationstitel müssen in der Liste escaped gerendert werden');
+if (!appJs.includes('Array.isArray(material.headers)')) fail('Material-Renderer muss Tabellen-Header defensiv validieren');
+if (!appJs.includes('Array.isArray(material.items)')) fail('Material-Renderer muss Listen-Items defensiv validieren');
 
 if (errors.length) {
   console.error('Smoke check failed:');

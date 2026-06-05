@@ -104,7 +104,7 @@ it-escape-game/
 └── tests/
 ```
 
-## Spielleiter-Modus
+## Spielleiter- und Admin-Modus
 
 Der Spielleiter-Modus nutzt im MVP einen einfachen PIN als Sichtschutz:
 
@@ -113,6 +113,16 @@ Der Spielleiter-Modus nutzt im MVP einen einfachen PIN als Sichtschutz:
 ```
 
 Das ist kein echter Sicherheitsmechanismus. Die App ist statisch; wer den Quellcode öffnet, kann Daten einsehen. Für Veranstaltungen reicht das als Sichtschutz am Gerät.
+
+Nach dem Freischalten kann im Spielleiter-Dialog der Admin-Editor geöffnet werden. Dort lassen sich Fragen, Aufgaben, Codes, Hinweise, Lernpunkte, Berufsbezüge, Materialien und Spielleiter-Lösungen bearbeiten.
+
+Wichtig:
+
+- Änderungen werden lokal im Browser gespeichert (`localStorage`).
+- Sie gelten sofort für diese Browser-Session und bleiben nach Neuladen erhalten.
+- Über „Bearbeitete Inhalte exportieren“ kann eine JSON-Datei gesichert werden.
+- Für dauerhafte Projektänderungen muss diese JSON-Datei später in die Repository-Dateien übernommen werden.
+- „Bearbeitete Inhalte zurücksetzen“ löscht nur die lokalen Admin-Anpassungen, nicht den Quellcode.
 
 ## Audio
 

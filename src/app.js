@@ -7,6 +7,7 @@ const DATA_PATHS = {
 
 const AUDIO_BASE = "../public/audio/";
 const STORAGE_KEY = "itEscapeGameState.v1";
+const CUSTOM_CONTENT_KEY = "itEscapeGameContent.v1";
 
 const state = {
   started: false,
@@ -63,6 +64,37 @@ async function loadData() {
   data.hints = hints;
   data.audio = audio;
   data.facilitator = facilitator;
+  applyCustomContent();
+}
+
+function applyCustomContent() {
+  const raw = localStorage.getItem(CUSTOM_CONTENT_KEY);
+  if (!raw) return;
+  try {
+    const custom = JSON.parse(raw);
+    if (Array.isArray(custom.stations)) data.stations = custom.stations.sort((a, b) => a.order - b.order);
+    if (custom.hints && typeof custom.hints === "object") data.hints = custom.hints;
+    if (custom.facilitator && typeof custom.facilitator === "object") {
+      data.facilitator = {
+        ...data.facilitator,
+        ...custom.facilitator,
+        solutions: Array.isArray(custom.facilitator.solutions) ? custom.facilitator.solutions : data.facilitator.solutions
+      };
+    }
+  } catch {
+    localStorage.removeItem(CUSTOM_CONTENT_KEY);
+  }
+}
+
+function persistCustomContent() {
+  const payload = {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    stations: data.stations,
+    hints: data.hints,
+    facilitator: data.facilitator
+  };
+  localStorage.setItem(CUSTOM_CONTENT_KEY, JSON.stringify(payload));
 }
 
 function stationById(id) {
@@ -137,9 +169,9 @@ function renderStationList() {
     const stationLabel = station.path === "bonus" ? "Bonusstation" : `Station ${station.order}`;
     button.setAttribute("aria-label", `${stationLabel}: ${station.title}. Thema: ${station.topic}. ca. ${station.estimatedMinutes} Minuten. Status: ${statusLabel}.`);
     button.innerHTML = `
-      <span class="badge ${solved ? "success" : station.path === "bonus" ? "warning" : ""}">${solved ? "Gelöst" : station.path === "bonus" ? "Bonus" : `Station ${station.order}`}</span>
-      <strong>${station.title}</strong>
-      <small>${station.topic} · ca. ${station.estimatedMinutes} Min.</small>
+      <span class="badge ${solved ? "success" : station.path === "bonus" ? "warning" : ""}">${solved ? "Gelöst" : station.path === "bonus" ? "Bonus" : `Station ${escapeHtml(station.order)}`}</span>
+      <strong>${escapeHtml(station.title)}</strong>
+      <small>${escapeHtml(station.topic)} · ca. ${escapeHtml(station.estimatedMinutes)} Min.</small>
     `;
     button.addEventListener("click", () => renderStation(station.id));
     container.appendChild(button);
@@ -148,6 +180,9 @@ function renderStationList() {
 }
 
 function renderMaterial(material) {
+  if (!material || typeof material !== "object") {
+    return `<article class="material-card"><p>${escapeHtml(String(material || ""))}</p></article>`;
+  }
   if (material.type === "mail") {
     return `
       <article class="material-card">
@@ -163,12 +198,19 @@ function renderMaterial(material) {
     `;
   }
   if (material.type === "table") {
-    const headers = material.headers.map((header) => `<th>${escapeHtml(header)}</th>`).join("");
-    const rows = material.rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(String(cell))}</td>`).join("")}</tr>`).join("");
+    const headersSource = Array.isArray(material.headers) ? material.headers : [];
+    const rowsSource = Array.isArray(material.rows) ? material.rows : [];
+    const headers = headersSource.map((header) => `<th>${escapeHtml(header)}</th>`).join("");
+    const rows = rowsSource.map((row) => {
+      const cells = Array.isArray(row) ? row : [row];
+      return `<tr>${cells.map((cell) => `<td>${escapeHtml(String(cell))}</td>`).join("")}</tr>`;
+    }).join("");
+    if (!headers && !rows) return `<article class="material-card"><p>${escapeHtml(material.title || "Tabelle ohne Einträge")}</p></article>`;
     return `<div class="material-card table-wrap"><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   if (material.type === "list") {
-    return `<article class="material-card"><h3>${escapeHtml(material.title || "Liste")}</h3><ul>${material.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></article>`;
+    const items = Array.isArray(material.items) ? material.items : [];
+    return `<article class="material-card"><h3>${escapeHtml(material.title || "Liste")}</h3><ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></article>`;
   }
   if (material.type === "code") {
     return `<article class="material-card"><h3>${escapeHtml(material.title || "Code")}</h3><pre>${escapeHtml(material.code)}</pre></article>`;
@@ -186,12 +228,13 @@ function renderStation(stationId) {
   const shownHints = state.shownHints[station.id] || 0;
   const solved = isSolved(station.id);
   const detail = $("#stationDetail");
+  const materials = Array.isArray(station.materials) ? station.materials : [];
   detail.innerHTML = `
-    <span class="badge ${station.path === "bonus" ? "warning" : ""}">${station.path === "bonus" ? "Bonusstation" : `Station ${station.order}`}</span>
+    <span class="badge ${station.path === "bonus" ? "warning" : ""}">${station.path === "bonus" ? "Bonusstation" : `Station ${escapeHtml(station.order)}`}</span>
     <h2>${escapeHtml(station.title)}</h2>
     <p>${escapeHtml(station.story)}</p>
     <p><strong>Auftrag:</strong> ${escapeHtml(station.task)}</p>
-    <div class="material-grid">${station.materials.map(renderMaterial).join("")}</div>
+    <div class="material-grid">${materials.map(renderMaterial).join("")}</div>
     <div class="button-row">
       <button type="button" data-action="audio">Audio abspielen</button>
       <button type="button" data-action="hint">Hinweis anzeigen</button>
@@ -344,21 +387,183 @@ function unlockFacilitator() {
   }
 }
 
+function renderAdminEditor() {
+  const editor = $("#adminEditor");
+  if (!editor) return;
+  editor.innerHTML = `
+    <section class="admin-editor" aria-labelledby="adminEditorHeading">
+      <div class="section-title-row">
+        <div>
+          <h3 id="adminEditorHeading">Admin-Editor</h3>
+          <p>Änderungen werden lokal in diesem Browser gespeichert. Über „Exportieren“ kannst du die bearbeiteten JSON-Daten sichern oder später in die Projektdateien übernehmen lassen.</p>
+        </div>
+      </div>
+      <div class="button-row">
+        <button type="button" data-admin-export>Bearbeitete Inhalte exportieren</button>
+        <button type="button" data-admin-reset class="ghost">Bearbeitete Inhalte zurücksetzen</button>
+      </div>
+      <div class="admin-station-list">
+        ${data.stations.map(renderAdminStationForm).join("")}
+      </div>
+    </section>
+  `;
+  editor.querySelector("[data-admin-export]").addEventListener("click", exportAdminContent);
+  editor.querySelector("[data-admin-reset]").addEventListener("click", resetAdminContent);
+  editor.querySelectorAll("[data-admin-save]").forEach((button) => {
+    button.addEventListener("click", () => saveAdminStationEdits(button.getAttribute("data-admin-save")));
+  });
+}
+
+function renderAdminStationForm(station) {
+  const solution = solutionByStationId(station.id) || { shortSolution: "", explanation: "", code: station.code };
+  const hints = data.hints[station.id] || [];
+  return `
+    <article class="admin-station-form" data-admin-station="${escapeHtml(station.id)}">
+      <h4>${station.path === "bonus" ? "Bonus" : `Station ${escapeHtml(station.order)}`}: ${escapeHtml(station.title)}</h4>
+      <div class="admin-grid">
+        <label>Titel
+          <input name="title" value="${escapeHtml(station.title)}">
+        </label>
+        <label>Thema
+          <input name="topic" value="${escapeHtml(station.topic)}">
+        </label>
+        <label>Code
+          <input name="code" value="${escapeHtml(station.code)}" inputmode="numeric" pattern="[0-9]{3}" maxlength="3">
+        </label>
+        <label>Minuten
+          <input name="estimatedMinutes" value="${escapeHtml(station.estimatedMinutes)}" inputmode="numeric">
+        </label>
+      </div>
+      <label>Story / Frage
+        <textarea name="story" rows="3">${escapeHtml(station.story)}</textarea>
+      </label>
+      <label>Auftrag / Frage an das Team
+        <textarea name="task" rows="4">${escapeHtml(station.task)}</textarea>
+      </label>
+      <label>Materialien als JSON
+        <textarea name="materials" rows="8" spellcheck="false">${escapeHtml(JSON.stringify(station.materials, null, 2))}</textarea>
+      </label>
+      <label>Hinweise, ein Hinweis pro Zeile
+        <textarea name="hints" rows="4">${escapeHtml(hints.join("\n"))}</textarea>
+      </label>
+      <label>Lernpunkt
+        <textarea name="learningPoint" rows="3">${escapeHtml(station.learningPoint)}</textarea>
+      </label>
+      <label>Berufsbezug
+        <textarea name="careerLink" rows="3">${escapeHtml(station.careerLink)}</textarea>
+      </label>
+      <label>Kurzlösung für Spielleitung
+        <textarea name="shortSolution" rows="2">${escapeHtml(solution.shortSolution)}</textarea>
+      </label>
+      <label>Erklärung für Spielleitung
+        <textarea name="explanation" rows="3">${escapeHtml(solution.explanation)}</textarea>
+      </label>
+      <button type="button" class="primary" data-admin-save="${escapeHtml(station.id)}">Station speichern</button>
+    </article>
+  `;
+}
+
+function saveAdminStationEdits(stationId) {
+  const form = Array.from(document.querySelectorAll("[data-admin-station]")).find((candidate) => candidate.getAttribute("data-admin-station") === stationId);
+  const station = stationById(stationId);
+  if (!form || !station) return;
+
+  const field = (name) => form.querySelector(`[name="${name}"]`);
+  const value = (name) => field(name)?.value.trim() || "";
+  const code = value("code");
+  if (!/^\d{3}$/.test(code)) {
+    showToast("Der Code muss exakt dreistellig sein, z. B. 123.");
+    return;
+  }
+
+  let materials;
+  try {
+    materials = JSON.parse(field("materials").value);
+  } catch (error) {
+    showToast(`Materialien-JSON ist ungültig: ${error.message}`);
+    return;
+  }
+  if (!Array.isArray(materials) || materials.length === 0) {
+    showToast("Materialien müssen ein nicht-leeres JSON-Array sein.");
+    return;
+  }
+
+  Object.assign(station, {
+    title: value("title"),
+    topic: value("topic"),
+    code,
+    estimatedMinutes: Number(value("estimatedMinutes")) || station.estimatedMinutes,
+    story: value("story"),
+    task: value("task"),
+    materials,
+    learningPoint: value("learningPoint"),
+    careerLink: value("careerLink")
+  });
+  data.hints[stationId] = field("hints").value.split("\n").map((hint) => hint.trim()).filter(Boolean);
+
+  let solution = solutionByStationId(stationId);
+  if (!solution) {
+    solution = { stationId, code, shortSolution: "", explanation: "" };
+    data.facilitator.solutions.push(solution);
+  }
+  Object.assign(solution, {
+    code,
+    shortSolution: value("shortSolution"),
+    explanation: value("explanation")
+  });
+
+  persistCustomContent();
+  persistState();
+  renderStationList();
+  if (state.currentStationId) renderStation(state.currentStationId);
+  renderAdminEditor();
+  showToast("Station gespeichert. Die Änderung ist lokal in diesem Browser aktiv.");
+}
+
+function exportAdminContent() {
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    stations: data.stations,
+    hints: data.hints,
+    facilitator: data.facilitator
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "it-escape-game-admin-content.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  showToast("Export erstellt.");
+}
+
+function resetAdminContent() {
+  const confirmed = window.confirm("Alle lokal bearbeiteten Fragen, Antworten und Hinweise zurücksetzen?");
+  if (!confirmed) return;
+  localStorage.removeItem(CUSTOM_CONTENT_KEY);
+  window.location.reload();
+}
+
 function renderFacilitatorPanel() {
   const panel = $("#facilitatorPanel");
   panel.innerHTML = `
     <p>${escapeHtml(data.facilitator.disclaimer || "")}</p>
     <div class="button-row">
       <button type="button" data-action="timer">Timer ${state.timerRunning ? "pausieren" : "starten"}</button>
+      <button type="button" data-action="admin">Admin-Editor öffnen</button>
       <button type="button" data-action="reset" class="ghost">Spiel zurücksetzen</button>
       <a href="../public/print/stationen_spielleitung.md" target="_blank"><button type="button">Druckansicht</button></a>
     </div>
+    <div id="adminEditor" class="hidden"></div>
     <div class="solution-grid">
       ${data.facilitator.solutions.map((solution) => {
         const station = stationById(solution.stationId);
         return `
           <article class="solution-card">
-            <h3>${station?.order}. ${escapeHtml(station?.title || solution.stationId)}</h3>
+            <h3>${escapeHtml(station?.order || "?")}. ${escapeHtml(station?.title || solution.stationId)}</h3>
             <div class="solution-code">${escapeHtml(solution.code)}</div>
             <p><strong>Kurzlösung:</strong> ${escapeHtml(solution.shortSolution)}</p>
             <p>${escapeHtml(solution.explanation)}</p>
@@ -375,6 +580,11 @@ function renderFacilitatorPanel() {
     renderFacilitatorPanel();
   });
   panel.querySelector('[data-action="reset"]').addEventListener("click", resetGame);
+  panel.querySelector('[data-action="admin"]').addEventListener("click", () => {
+    const editor = $("#adminEditor");
+    editor.classList.toggle("hidden");
+    if (!editor.classList.contains("hidden")) renderAdminEditor();
+  });
   panel.querySelectorAll("[data-solve]").forEach((button) => {
     button.addEventListener("click", () => {
       const id = button.getAttribute("data-solve");
