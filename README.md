@@ -206,4 +206,7 @@ MP3-Dateien werden unter `public/audio/` abgelegt.
 
 Siehe:
 
-`docs/deployment_ubuntu_nginx.md`
+- `docs/installation.md` — Installation mit Docker Compose und PostgreSQL
+- `docs/functionality.md` — Funktionsbeschreibung für Übergabe/Stakeholder
+- `docs/deployment_ubuntu_nginx.md` — optionaler statischer Nginx-Fallback
+- `docs/mvp_deployment.md` — aktuelles internes MVP-Deployment auf diesem VPS
