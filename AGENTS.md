@@ -28,6 +28,27 @@ Arbeitstitel:
 8. Der Spielleiter-PIN ist nur Sichtschutz, kein Security-Feature.
 9. Änderungen immer mit Smoke-Test prüfen: `node tests/smoke-check.mjs`.
 10. Bei UI-Änderungen zusätzlich im Browser prüfen.
+11. Für Cursor-Übergaben zuerst `docs/cursor_handoff.md` und `docs/cursor_workflow.md` lesen.
+12. Die aktuelle geschützte Preview läuft unter `https://preview.example.com/`.
+
+## Setup und Prüfung
+
+```bash
+cd /root/projects/it-escape-game
+node tests/smoke-check.mjs
+```
+
+Optionaler lokaler Preview-Server auf dem VPS:
+
+```bash
+python3 -m http.server 8095 --bind 127.0.0.1
+```
+
+Dann per Cursor-Portforwarding/SSH-Tunnel öffnen:
+
+```text
+http://127.0.0.1:8095/src/
+```
 
 ## Cursor-Rolle
 

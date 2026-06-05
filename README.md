@@ -65,6 +65,22 @@ cd /root/projects/it-escape-game
 node tests/smoke-check.mjs
 ```
 
+## Cursor-Übergabe
+
+Für die Weiterarbeit in Cursor siehe:
+
+```text
+docs/cursor_handoff.md
+docs/cursor_workflow.md
+AGENTS.md
+```
+
+Empfohlen ist Cursor Remote-SSH auf den VPS mit geöffnetem Projektordner:
+
+```text
+/root/projects/it-escape-game
+```
+
 ## Projektstruktur
 
 ```text
