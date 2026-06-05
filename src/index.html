@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Azubi-Einsatz: Der Ransomware-Alarm</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">IT-Escape-Game für Schüler*innen</p>
+        <h1>Azubi-Einsatz: Der Ransomware-Alarm</h1>
+        <p class="hero-text">Ihr seid das Junior-IT-Team der Beton-Palast Junior GmbH. Findet heraus, was passiert ist, stoppt die Ausbreitung und rettet die wichtigsten Daten.</p>
+      </div>
+      <div class="status-card" aria-live="polite">
+        <span id="timerDisplay">60:00</span>
+        <small id="progressText">Spiel noch nicht gestartet</small>
+      </div>
+    </header>
+
+    <main>
+      <section id="startScreen" class="panel start-panel">
+        <h2>Mission starten</h2>
+        <p>Montagmorgen, 08:58 Uhr. Mehrere Dateien enden plötzlich auf <code>.locked</code>. Eine Mitarbeiterin hat kurz zuvor eine verdächtige Ausschreibung geöffnet. Eure Aufgabe: Hinweise sammeln, Codes knacken und den Vorfall kontrollieren.</p>
+        <label for="teamName">Teamname optional</label>
+        <input id="teamName" type="text" maxlength="40" placeholder="z. B. Team Firewall">
+        <div class="button-row">
+          <button id="startButton" class="primary">Spiel starten</button>
+          <button id="introAudioButton" type="button">Intro-Audio</button>
+          <button id="facilitatorButton" type="button">Spielleitung</button>
+        </div>
+        <p class="legal-note">Dieses Lernspiel ist von Awareness-Formaten inspiriert, verwendet eigene Inhalte und ist keine offizielle Veröffentlichung des BSI.</p>
+      </section>
+
+      <section id="gameScreen" class="game-grid hidden" aria-label="Spielbereich">
+        <aside class="panel station-list-panel">
+          <div class="section-title-row">
+            <h2>Stationen</h2>
+            <button id="resetViewButton" type="button" class="ghost">Übersicht</button>
+          </div>
+          <div id="stationList" class="station-list"></div>
+          <div class="button-row stacked">
+            <button id="finishButton" type="button" class="success hidden">Abschluss anzeigen</button>
+            <button id="facilitatorButtonInGame" type="button">Spielleitung</button>
+          </div>
+        </aside>
+
+        <section id="stationDetail" class="panel station-detail" tabindex="-1"></section>
+      </section>
+
+      <section id="finishScreen" class="panel hidden">
+        <h2>Geschafft – Einsatz abgeschlossen</h2>
+        <p>Ihr habt als Junior-IT-Team wichtige Schritte eines Ransomware-Vorfalls bearbeitet: Phishing erkennen, Links prüfen, Logs lesen, Sofortmaßnahmen priorisieren, Backups bewerten und Systeme isolieren.</p>
+        <div id="learningSummary" class="learning-summary"></div>
+        <blockquote>IT ist nicht nur Programmieren. IT bedeutet Probleme verstehen, Systeme schützen, logisch denken, im Team arbeiten und Verantwortung übernehmen.</blockquote>
+        <div class="button-row">
+          <button id="outroAudioButton" type="button">Outro-Audio</button>
+          <button id="backToGameButton" type="button">Zurück zum Spiel</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="facilitatorDialog">
+    <form method="dialog" class="dialog-inner">
+      <div class="section-title-row">
+        <h2>Spielleitung</h2>
+        <button value="close" class="ghost" aria-label="Spielleiter-Modus schließen">Schließen</button>
+      </div>
+      <div id="pinGate">
+        <p>Der PIN ist nur Sichtschutz während der Veranstaltung.</p>
+        <label for="facilitatorPin">PIN</label>
+        <input id="facilitatorPin" type="password" inputmode="numeric" placeholder="1984">
+        <button id="unlockFacilitatorButton" type="button" class="primary">Freischalten</button>
+        <p id="pinFeedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <div id="facilitatorPanel" class="hidden"></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

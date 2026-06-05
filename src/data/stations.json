@@ -1,0 +1,145 @@
+[
+  {
+    "id": "station_01_phishing",
+    "order": 1,
+    "path": "main",
+    "title": "Die verdächtige E-Mail",
+    "topic": "Phishing",
+    "code": "631",
+    "audio": "02_station_phishing.mp3",
+    "estimatedMinutes": 8,
+    "careerLink": "IT-Support, Security Operations, Incident Response",
+    "learningPoint": "Phishing erkennt man meist an mehreren Warnzeichen: Absender, Zeitdruck, Anhänge und ungewöhnliche Dateiendungen.",
+    "story": "Im Postfach von Frau Knecht wurden fünf E-Mails gefunden. Eine davon hat wahrscheinlich den Vorfall ausgelöst.",
+    "task": "Findet heraus: Welche E-Mail war der Auslöser? Wie viele eindeutige Warnzeichen enthält diese E-Mail? Welche Dateiendung war besonders gefährlich? Wie viele andere E-Mails im Postfach sollten ebenfalls gemeldet werden?",
+    "materials": [
+      {"type": "mail", "title": "Mail A", "from": "info@beton-palast-junior.de", "subject": "Teamfrühstück Freitag", "body": "Hallo zusammen, am Freitag gibt es um 09:00 Uhr ein kleines Frühstück im Aufenthaltsraum. Viele Grüße, Sekretariat", "attachment": "keiner"},
+      {"type": "mail", "title": "Mail B", "from": "auftrag@bauprojekt24-support.com", "subject": "DRINGEND!!! Neuer Großauftrag - heute bestätigen", "body": "Sehr geehrte Damen und Herren, bitte öffnen Sie die angehängte ZIP-Datei und bestätigen Sie den Auftrag innerhalb von 30 Minuten. Falls keine Bestätigung erfolgt, wird der Auftrag automatisch storniert. Mit freundlichen Grüßen, Projektverwaltung Beton Palast", "attachment": "Ausschreibung_Projekt_4471.zip", "extra": "Inhalt laut Dateiliste: Ausschreibung_Projekt_4471.pdf.exe"},
+      {"type": "mail", "title": "Mail C", "from": "newsletter@baustoffhandel-nord.example", "subject": "Neue Betonmischer im Angebot", "body": "Guten Tag, hier finden Sie unsere aktuelle Angebotsübersicht. Viele Grüße, Baustoffhandel Nord", "attachment": "keiner", "extra": "Link: https://www.baustoffhandel-nord.example/angebote"},
+      {"type": "mail", "title": "Mail D", "from": "it-support@beton-palast-login.example", "subject": "Passwort läuft ab", "body": "Ihr Passwort läuft in 5 Minuten ab. Melden Sie sich sofort an, sonst wird Ihr Konto gelöscht. Klicken Sie hier: https://beton-palast-login.example/passwort", "attachment": "keiner"},
+      {"type": "mail", "title": "Mail E", "from": "bewerbung.lukas@example.com", "subject": "Bewerbung Praktikum IT", "body": "Guten Tag, anbei sende ich meine Bewerbung für das Schülerpraktikum. Viele Grüße, Lukas", "attachment": "Bewerbung_Lukas.pdf"}
+    ]
+  },
+  {
+    "id": "station_02_linkcheck",
+    "order": 2,
+    "path": "main",
+    "title": "Der Link-Check",
+    "topic": "Domains prüfen",
+    "code": "146",
+    "audio": "03_station_linkcheck.mp3",
+    "estimatedMinutes": 7,
+    "careerLink": "Helpdesk, Awareness-Schulung, Security-Tickets",
+    "learningPoint": "Bei Links zählt die echte Domain, nicht nur bekannte Wörter irgendwo in der URL.",
+    "story": "Die Ransomware kam wahrscheinlich über einen Link oder Anhang ins Unternehmen. Prüft, welche Links vertrauenswürdig sind.",
+    "task": "Findet die drei vertrauenswürdigsten Links. Schreibt ihre Nummern in aufsteigender Reihenfolge auf.",
+    "materials": [
+      {"type": "info", "text": "Entscheidend ist die echte Domain direkt vor dem ersten einzelnen / nach https:// oder http://."},
+      {"type": "table", "headers": ["Nr.", "Link"], "rows": [["1", "https://www.bsi.bund.de/sicherheitstipps"], ["2", "https://bsi.bund.de.sicherheits-check24.example/login"], ["3", "http://beton-palast.de.login-service.example/update"], ["4", "https://support.microsoft.com/de-de/security"], ["5", "https://microsoft-support.de.ticket-pruefung.example"], ["6", "https://www.beton-palast-junior.example/intranet"], ["7", "https://beton-palast.de@konto-pruefung.example/login"], ["8", "https://www.cyber-sicherheitsnetzwerk.de"]]}
+    ]
+  },
+  {
+    "id": "station_03_logbuch",
+    "order": 3,
+    "path": "main",
+    "title": "Logbuch des Angriffs",
+    "topic": "Loganalyse",
+    "code": "437",
+    "audio": "04_station_logbuch.mp3",
+    "estimatedMinutes": 8,
+    "careerLink": "IT-Support, Monitoring, Security Operations, Systemadministration",
+    "learningPoint": "Logs helfen, einen Vorfall zeitlich zu rekonstruieren und betroffene Systeme zu erkennen.",
+    "story": "Der Server hat Ereignisse protokolliert. Bringt die Ereignisse in Zusammenhang und beantwortet drei Fragen.",
+    "task": "1. Wie viele Minuten lagen zwischen dem Öffnen der ZIP-Datei und der ersten .locked-Datei? 2. Wie viele Geräte zeigen sicher Anzeichen einer Infektion oder Verschlüsselung? 3. In welcher Minute wurde die Netzwerkverbindung von PC-KNECHT getrennt? Nutzt nur die letzte Ziffer der Minute.",
+    "materials": [
+      {"type": "table", "headers": ["Uhrzeit", "Gerät", "Ereignis"], "rows": [["08:41", "PC-KNECHT", "E-Mail mit ZIP-Anhang empfangen"], ["08:44", "PC-KNECHT", "Datei Ausschreibung_Projekt_4471.zip geöffnet"], ["08:45", "PC-KNECHT", "Prozess Ausschreibung_Projekt_4471.pdf.exe gestartet"], ["08:47", "PC-KNECHT", "Verbindung zu daten-sync-cloud.example"], ["08:48", "PC-KNECHT", "Erste Datei umbenannt zu .locked"], ["08:49", "FILESERVER-01", "Viele Dateiänderungen im Ordner Projekte"], ["08:51", "PC-MAURER", "Zugriff auf Netzlaufwerk P:\\Projekte"], ["08:52", "PC-MAURER", "Erste Datei umbenannt zu .locked"], ["08:54", "FILESERVER-01", "1.243 Dateien verändert"], ["08:57", "PC-KNECHT", "Netzwerkverbindung getrennt"]]}
+    ]
+  },
+  {
+    "id": "station_04_sofortmassnahmen",
+    "order": 4,
+    "path": "main",
+    "title": "Sofortmaßnahmen bei Ransomware",
+    "topic": "Incident Response",
+    "code": "315",
+    "audio": "05_station_sofortmassnahmen.mp3",
+    "estimatedMinutes": 8,
+    "careerLink": "IT-Betrieb, Incident Response, Systemadministration",
+    "learningPoint": "Bei Ransomware zählt strukturiertes Handeln: melden, Ausbreitung begrenzen, Hinweise sichern.",
+    "story": "Ihr seid im Junior-IT-Team. Es gibt sechs mögliche Maßnahmen. Nur drei gehören sofort in eine sinnvolle Reihenfolge.",
+    "task": "Findet die drei sinnvollen Sofortmaßnahmen und bringt sie in diese Reihenfolge: Verantwortliche informieren, Ausbreitung begrenzen, Beweise und Hinweise dokumentieren.",
+    "materials": [
+      {"type": "table", "headers": ["Nr.", "Maßnahme"], "rows": [["1", "Betroffene Geräte vom Netzwerk trennen, aber nicht ausschalten."], ["2", "Erpresser kontaktieren und über die Zahlung verhandeln."], ["3", "Vorfall intern melden und Verantwortliche informieren."], ["4", "Alle Dateien schnell vom infizierten PC auf den Server kopieren."], ["5", "Hinweise sichern: Screenshots, Uhrzeiten, betroffene Geräte, Dateinamen."], ["6", "Sofort alle Backups löschen, damit sie nicht infiziert werden."]]}
+    ]
+  },
+  {
+    "id": "station_05_backup",
+    "order": 5,
+    "path": "main",
+    "title": "Backup-Tresor",
+    "topic": "Backups",
+    "code": "224",
+    "audio": "06_station_backup.mp3",
+    "estimatedMinutes": 8,
+    "careerLink": "Systemintegration, Cloud-Betrieb, IT-Administration",
+    "learningPoint": "Ein gutes Backup ist getrennt, versioniert oder geschützt und wird nicht einfach mitverschlüsselt.",
+    "story": "Die Firma hat mehrere Sicherungen. Nicht jede davon hilft bei Ransomware.",
+    "task": "Beantwortet: Wie viele Sicherungen sind bei Ransomware wirklich brauchbar? Wie viele Sicherungen sind riskant, weil sie Änderungen direkt übernehmen könnten? Welche brauchbare Sicherung ist am aktuellsten? Nutzt ihre Position im Alphabet.",
+    "materials": [
+      {"type": "table", "headers": ["Sicherung", "Beschreibung"], "rows": [["A", "Dateien liegen nur auf dem normalen Fileserver."], ["B", "Ein NAS ist dauerhaft als Netzlaufwerk verbunden und wird jede Minute synchronisiert."], ["C", "Eine externe Festplatte wurde gestern angeschlossen, danach abgezogen und in einen Schrank gelegt."], ["D", "Eine Cloud-Sicherung hat Versionierung und MFA. Letzte Sicherung: heute 06:00 Uhr."], ["E", "Ein zweiter Server spiegelt alle Änderungen sofort vom Fileserver."], ["F", "Ein alter USB-Stick enthält Projektdaten von vor acht Monaten."]]}
+    ]
+  },
+  {
+    "id": "station_06_netzwerk",
+    "order": 6,
+    "path": "main",
+    "title": "Netzwerk-Isolation",
+    "topic": "Netzwerk",
+    "code": "124",
+    "audio": "07_station_netzwerk.mp3",
+    "estimatedMinutes": 7,
+    "careerLink": "Netzwerkadministration, Systemintegration, IT-Betrieb",
+    "learningPoint": "Netzwerkpläne helfen, betroffene Systeme gezielt zu isolieren, ohne alles lahmzulegen.",
+    "story": "Ihr habt einen kleinen Netzwerkplan. Ziel: Betroffene Geräte isolieren, ohne gleich das ganze Unternehmen lahmzulegen.",
+    "task": "Welche drei Switch-Ports trennt ihr zuerst vom Netzwerk? Nutzt jeweils nur die letzte Ziffer der Portnummern und schreibt sie in aufsteigender Reihenfolge.",
+    "materials": [
+      {"type": "table", "headers": ["Switch-Port", "Gerät"], "rows": [["11", "PC-KNECHT"], ["12", "PC-MAURER"], ["13", "DRUCKER-VERWALTUNG"], ["14", "FILESERVER-01"], ["15", "BACKUP-NAS"], ["16", "ROUTER"], ["17", "PC-EMPFANG"], ["18", "AZUBI-LAPTOP"]]},
+      {"type": "list", "title": "Hinweise aus den Logs", "items": ["PC-KNECHT hat die Schadsoftware gestartet.", "FILESERVER-01 zeigt massenhaft verschlüsselte Dateien.", "PC-MAURER zeigt ebenfalls .locked-Dateien.", "BACKUP-NAS darf nicht ausgeschaltet werden, soll aber vorerst nicht weiter beschrieben werden.", "Router soll online bleiben, damit Hilfe kontaktiert werden kann."]}
+    ]
+  },
+  {
+    "id": "station_07_accounts",
+    "order": 7,
+    "path": "bonus",
+    "title": "Passwort- und Accountprüfung",
+    "topic": "Accounts",
+    "code": "135",
+    "audio": "08_station_accounts.mp3",
+    "estimatedMinutes": 8,
+    "careerLink": "Helpdesk, Identity Management, Security, Cloud-Systeme",
+    "learningPoint": "Schwache, wiederverwendete oder bekannte Passwörter sind ein schnelles Risiko und müssen priorisiert behandelt werden.",
+    "story": "Nach dem Vorfall prüft ihr Benutzerkonten. Einige Konten sind besonders gefährdet.",
+    "task": "Ein Konto gilt als kritisch für sofortige Passwort-Zurücksetzung, wenn mindestens zwei Passwort-Risiken zutreffen. Findet alle kritischen Konten und schreibt die Kontonummern aufsteigend auf.",
+    "materials": [
+      {"type": "table", "headers": ["Konto", "Passwort-Hinweis", "Wiederverwendet?", "MFA aktiv?", "Adminrechte?", "In Passwortliste?"], "rows": [["1 Frau Knecht", "Sommer2024!", "Ja", "Nein", "Nein", "Ja"], ["2 Herr Maurer", "langes zufälliges Passwort", "Nein", "Ja", "Ja", "Nein"], ["3 Praktikum", "Praktikum123", "Ja", "Nein", "Nein", "Ja"], ["4 IT-Admin", "langes zufälliges Passwort", "Nein", "Nein", "Ja", "Nein"], ["5 Bauleitung", "BetonPalast!", "Ja", "Ja", "Nein", "Ja"], ["6 Empfang", "langes zufälliges Passwort", "Nein", "Ja", "Nein", "Nein"]]}
+    ]
+  },
+  {
+    "id": "station_08_codierung",
+    "order": 8,
+    "path": "bonus",
+    "title": "Kleine IT-Codierung",
+    "topic": "Codierung",
+    "code": "209",
+    "audio": "09_station_codierung.mp3",
+    "estimatedMinutes": 7,
+    "careerLink": "Anwendungsentwicklung, Grundlagen der Informatik, IT-Ausbildung",
+    "learningPoint": "Computer stellen Zeichen als Zahlen und Binärwerte dar. Codierung ist eine Grundlage der Programmierung.",
+    "story": "Auf einem Notizzettel des Angreifers steht ein kurzer Binärcode. Daneben liegt eine ASCII-Tabelle.",
+    "task": "Wandelt die drei Binärwerte in Buchstaben um. Nutzt dann die Positionen im Alphabet. Bei zweistelligen Ergebnissen nutzt ihr die Quersumme und davon die letzte Ziffer.",
+    "materials": [
+      {"type": "code", "title": "Notizzettel", "code": "0100 0010   0101 0011   0100 1001"},
+      {"type": "table", "headers": ["Binär", "Zeichen"], "rows": [["0100 0001", "A"], ["0100 0010", "B"], ["0100 0011", "C"], ["0100 0100", "D"], ["0100 0101", "E"], ["0100 0110", "F"], ["0100 0111", "G"], ["0100 1000", "H"], ["0100 1001", "I"], ["0101 0011", "S"]]}
+    ]
+  }
+]

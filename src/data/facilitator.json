@@ -1,0 +1,54 @@
+{
+  "pin": "1984",
+  "disclaimer": "Der PIN ist nur Sichtschutz während der Veranstaltung und kein echter Sicherheitsmechanismus.",
+  "solutions": [
+    {
+      "stationId": "station_01_phishing",
+      "code": "631",
+      "shortSolution": "Mail B, 6 Warnzeichen, .exe, 1 weitere Phishing-Mail",
+      "explanation": "Auslöser ist Mail B. Warnzeichen: externe Domain, Zeitdruck, ZIP-Anhang, doppelte Dateiendung .pdf.exe, unpersönliche Ansprache, unpassender Absender. Die gefährliche Endung .exe hat 3 Buchstaben. Mail D sollte ebenfalls gemeldet werden."
+    },
+    {
+      "stationId": "station_02_linkcheck",
+      "code": "146",
+      "shortSolution": "Vertrauenswürdige Links 1, 4, 6",
+      "explanation": "Richtig sind Link 1 mit BSI-Domain, Link 4 mit Microsoft-Support-Domain und Link 6 als fiktive eigene Intranet-Domain."
+    },
+    {
+      "stationId": "station_03_logbuch",
+      "code": "437",
+      "shortSolution": "4 Minuten, 3 Geräte, Minute 57",
+      "explanation": "ZIP geöffnet um 08:44, erste .locked-Datei um 08:48 = 4 Minuten. Betroffen: PC-KNECHT, FILESERVER-01, PC-MAURER = 3 Geräte. Netzwerk getrennt um 08:57, letzte Ziffer 7."
+    },
+    {
+      "stationId": "station_04_sofortmassnahmen",
+      "code": "315",
+      "shortSolution": "Melden, isolieren, dokumentieren",
+      "explanation": "Nr. 3: Vorfall intern melden. Nr. 1: betroffene Geräte isolieren, aber nicht ausschalten. Nr. 5: Hinweise sichern."
+    },
+    {
+      "stationId": "station_05_backup",
+      "code": "224",
+      "shortSolution": "2 brauchbare Backups, 2 riskante Kopien, D=4",
+      "explanation": "Brauchbar sind C und D. Riskant sind B und E, weil sie Änderungen direkt übernehmen könnten. Die aktuellste brauchbare Sicherung ist D, also Position 4."
+    },
+    {
+      "stationId": "station_06_netzwerk",
+      "code": "124",
+      "shortSolution": "Ports 11, 12, 14",
+      "explanation": "Zu trennen sind PC-KNECHT an Port 11, PC-MAURER an Port 12 und FILESERVER-01 an Port 14. Gesucht sind die letzten Ziffern aufsteigend: 1, 2, 4."
+    },
+    {
+      "stationId": "station_07_accounts",
+      "code": "135",
+      "shortSolution": "Kritische Passwortkonten 1, 3, 5",
+      "explanation": "Konto 1, 3 und 5 erfüllen jeweils mindestens zwei Passwort-Risiken: schwach/erratbar, wiederverwendet oder in Passwortliste gefunden."
+    },
+    {
+      "stationId": "station_08_codierung",
+      "code": "209",
+      "shortSolution": "B=2, S=0, I=9",
+      "explanation": "0100 0010 = B = 2. 0101 0011 = S = 19, Quersumme 10, letzte Ziffer 0. 0100 1001 = I = 9."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "station_01_phishing": [
+    "Achtet auf Absender, Zeitdruck und Anhänge.",
+    "Eine Datei kann aussehen wie ein PDF, aber eigentlich ein Programm sein.",
+    ".pdf.exe endet technisch auf .exe."
+  ],
+  "station_02_linkcheck": [
+    "Sucht nicht einfach nach bekannten Wörtern im Link.",
+    "Bei bsi.bund.de.irgendwas.example ist nicht bsi.bund.de die echte Hauptdomain.",
+    "Der Teil direkt vor dem Pfad ist entscheidend."
+  ],
+  "station_03_logbuch": [
+    "Achtet auf Uhrzeiten, nicht nur auf Gerätenamen.",
+    ".locked ist ein Hinweis auf verschlüsselte Dateien.",
+    "Gesucht sind Minuten, Geräteanzahl und letzte Ziffer."
+  ],
+  "station_04_sofortmassnahmen": [
+    "Nicht alles, was schnell klingt, ist richtig.",
+    "Kopieren kann Schaden vergrößern.",
+    "Erst melden, dann begrenzen, dann dokumentieren."
+  ],
+  "station_05_backup": [
+    "Eine Kopie ist nicht automatisch ein gutes Backup.",
+    "Alles, was dauerhaft verbunden ist, kann mitverschlüsselt werden.",
+    "Offline oder versioniert ist bei Ransomware besonders wertvoll."
+  ],
+  "station_06_netzwerk": [
+    "Trennt zuerst Geräte mit klaren Infektionsanzeichen.",
+    "Der Router ist wichtig für Kommunikation.",
+    "Nutzt nur die letzte Ziffer der Portnummern."
+  ],
+  "station_07_accounts": [
+    "Adminrechte sind wichtig, aber für diesen Code geht es um Passwortverdacht.",
+    "Wiederverwendung und Passwortlisten sind starke Warnzeichen.",
+    "Drei Konten erfüllen die Regel."
+  ],
+  "station_08_codierung": [
+    "Sucht die Binärwerte exakt in der Tabelle.",
+    "B ist der zweite Buchstabe im Alphabet.",
+    "Bei S entsteht eine zweistellige Zahl; dann Quersumme bilden."
+  ]
+}

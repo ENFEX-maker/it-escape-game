@@ -1,0 +1,57 @@
+{
+  "00_intro.mp3": {
+    "speaker": "Erzähler*in",
+    "direction": "ruhig, spannend",
+    "text": "Willkommen bei der Beton-Palast Junior GmbH. Heute seid ihr eigentlich für einen Schnuppertag in der IT-Abteilung hier. Doch aus dem normalen Kennenlernen wird plötzlich ein echter Einsatz. Mehrere Dateien lassen sich nicht mehr öffnen. Auf einem Bildschirm steht eine Erpressernachricht. Der IT-Leiter ist unterwegs und braucht eure Unterstützung. Ihr seid jetzt das Junior-IT-Team. Findet heraus, was passiert ist, stoppt die Ausbreitung und rettet die wichtigsten Daten."
+  },
+  "01_alarm_empfang.mp3": {
+    "speaker": "Frau Knecht",
+    "direction": "nervös, aber verständlich",
+    "text": "Hallo? Ist da jemand von der IT? Ich glaube, ich habe Mist gebaut. Da kam eine Mail mit einer Ausschreibung, und die sah wichtig aus. Ich habe die Datei geöffnet, und kurz danach hatten plötzlich ganz viele Dokumente so eine komische Endung. Locked oder so. Jetzt steht da irgendwas mit Zahlung und Countdown. Bitte sagt mir, dass wir das wieder hinbekommen."
+  },
+  "02_station_phishing.mp3": {
+    "speaker": "Lina",
+    "direction": "motiviert",
+    "text": "Okay, erster Schritt: Wir schauen uns das Postfach an. Bei Phishing geht es selten um nur ein einzelnes Merkmal. Meist ist es eine Kombination aus Druck, komischem Absender, merkwürdigem Anhang und unpassender Sprache. Findet die Mail, die den Angriff ausgelöst haben könnte. Zählt sauber, denn daraus entsteht der erste Code."
+  },
+  "03_station_linkcheck.mp3": {
+    "speaker": "Herr Weber",
+    "direction": "sachlich",
+    "text": "Achtet bei Links auf die echte Domain. Betrüger verstecken bekannte Namen gerne irgendwo vorne im Link. Entscheidend ist aber, wem die Domain wirklich gehört. Prüft die Liste in Ruhe. Nicht jeder Link, der wichtig aussieht, ist auch vertrauenswürdig."
+  },
+  "04_station_logbuch.mp3": {
+    "speaker": "Systemstimme",
+    "direction": "neutral",
+    "text": "Logdaten geladen. Ereignisse zwischen 08:41 Uhr und 08:57 Uhr erkannt. Mehrere Dateiänderungen, Prozessstart einer ausführbaren Datei, Netzwerkzugriffe und Verschlüsselungshinweise. Bitte rekonstruieren Sie den Ablauf."
+  },
+  "05_station_sofortmassnahmen.mp3": {
+    "speaker": "Herr Weber",
+    "direction": "ruhig, bestimmt",
+    "text": "Bei einem Ransomware-Vorfall ist Hektik gefährlich. Nicht einfach wild Dateien kopieren, nichts löschen und betroffene Geräte nicht blind ausschalten. Wir brauchen eine klare Reihenfolge: melden, Ausbreitung begrenzen, Hinweise sichern. Prüft die Maßnahmenkarten und entscheidet als Team."
+  },
+  "06_station_backup.mp3": {
+    "speaker": "Lina",
+    "direction": "erklärend",
+    "text": "Jetzt wird es spannend: Haben wir ein brauchbares Backup? Eine Kopie ist noch kein gutes Backup. Wenn sie dauerhaft verbunden ist, kann sie bei Ransomware ebenfalls verschlüsselt werden. Sucht nach Sicherungen, die getrennt, versioniert oder ausreichend geschützt sind."
+  },
+  "07_station_netzwerk.mp3": {
+    "speaker": "Systemstimme",
+    "direction": "technisch",
+    "text": "Netzwerkübersicht geladen. Mehrere Geräte zeigen auffälliges Verhalten. Priorisieren Sie Systeme mit eindeutigen Infektions- oder Verschlüsselungshinweisen. Ziel ist Eindämmung ohne vollständigen Kommunikationsverlust."
+  },
+  "08_station_accounts.mp3": {
+    "speaker": "Herr Weber",
+    "direction": "sachlich",
+    "text": "Ein Angriff endet nicht immer mit der Schadsoftware. Wir müssen auch prüfen, ob Konten missbraucht werden könnten. Schwache, wiederverwendete oder bereits bekannte Passwörter sind ein Risiko. Findet die Konten, bei denen wir sofort handeln müssen."
+  },
+  "09_station_codierung.mp3": {
+    "speaker": "Lina",
+    "direction": "leicht spielerisch",
+    "text": "Kleine Zusatzaufgabe für alle, die wissen wollen, wie Computer eigentlich Zeichen darstellen. Vor euch liegt ein Binärcode. Mit der Tabelle könnt ihr ihn in Buchstaben übersetzen. Danach braucht ihr nur noch die Position im Alphabet. Willkommen in der Welt der Codierung."
+  },
+  "99_outro.mp3": {
+    "speaker": "Erzähler*in",
+    "direction": "erleichtert, positiv",
+    "text": "Geschafft. Ihr habt die verdächtige Mail erkannt, Links geprüft, Logs gelesen, sinnvolle Sofortmaßnahmen ausgewählt, Backups bewertet und betroffene Systeme isoliert. Genau so arbeitet IT im echten Leben oft: aufmerksam, logisch, im Team und mit Verantwortung. Vielleicht war das heute nicht nur ein Spiel, sondern euer erster Schritt in Richtung IT-Beruf."
+  }
+}
