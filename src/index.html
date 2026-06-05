@@ -3,10 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IT-Escape-Game für Schüler*innen: Azubi-Einsatz – Der Ransomware-Alarm">
+  <meta name="theme-color" content="#0f1419">
   <title>Azubi-Einsatz: Der Ransomware-Alarm</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a href="#mainContent" class="skip-link">Zum Hauptinhalt springen</a>
   <div class="app-shell">
     <header class="hero">
       <div>
@@ -14,18 +17,18 @@
         <h1>Azubi-Einsatz: Der Ransomware-Alarm</h1>
         <p class="hero-text">Ihr seid das Junior-IT-Team der Beton-Palast Junior GmbH. Findet heraus, was passiert ist, stoppt die Ausbreitung und rettet die wichtigsten Daten.</p>
       </div>
-      <div class="status-card" aria-live="polite">
-        <span id="timerDisplay">60:00</span>
+      <div class="status-card" aria-live="polite" aria-label="Spielstatus">
+        <span class="sr-only">Verbleibende Spielzeit: </span><span id="timerDisplay">60:00</span>
         <small id="progressText">Spiel noch nicht gestartet</small>
       </div>
     </header>
 
-    <main>
-      <section id="startScreen" class="panel start-panel">
-        <h2>Mission starten</h2>
+    <main id="mainContent">
+      <section id="startScreen" class="panel start-panel" aria-labelledby="startHeading">
+        <h2 id="startHeading">Mission starten</h2>
         <p>Montagmorgen, 08:58 Uhr. Mehrere Dateien enden plötzlich auf <code>.locked</code>. Eine Mitarbeiterin hat kurz zuvor eine verdächtige Ausschreibung geöffnet. Eure Aufgabe: Hinweise sammeln, Codes knacken und den Vorfall kontrollieren.</p>
         <label for="teamName">Teamname optional</label>
-        <input id="teamName" type="text" maxlength="40" placeholder="z. B. Team Firewall">
+        <input id="teamName" type="text" maxlength="40" placeholder="z. B. Team Firewall" autocomplete="off">
         <div class="button-row">
           <button id="startButton" class="primary">Spiel starten</button>
           <button id="introAudioButton" type="button">Intro-Audio</button>
@@ -35,7 +38,7 @@
       </section>
 
       <section id="gameScreen" class="game-grid hidden" aria-label="Spielbereich">
-        <aside class="panel station-list-panel">
+        <aside class="panel station-list-panel" aria-label="Stationenübersicht">
           <div class="section-title-row">
             <h2>Stationen</h2>
             <button id="resetViewButton" type="button" class="ghost">Übersicht</button>
@@ -47,11 +50,11 @@
           </div>
         </aside>
 
-        <section id="stationDetail" class="panel station-detail" tabindex="-1"></section>
+        <section id="stationDetail" class="panel station-detail" tabindex="-1" aria-live="polite"></section>
       </section>
 
-      <section id="finishScreen" class="panel hidden">
-        <h2>Geschafft – Einsatz abgeschlossen</h2>
+      <section id="finishScreen" class="panel hidden" aria-labelledby="finishHeading">
+        <h2 id="finishHeading">Geschafft – Einsatz abgeschlossen</h2>
         <p>Ihr habt als Junior-IT-Team wichtige Schritte eines Ransomware-Vorfalls bearbeitet: Phishing erkennen, Links prüfen, Logs lesen, Sofortmaßnahmen priorisieren, Backups bewerten und Systeme isolieren.</p>
         <div id="learningSummary" class="learning-summary"></div>
         <blockquote>IT ist nicht nur Programmieren. IT bedeutet Probleme verstehen, Systeme schützen, logisch denken, im Team arbeiten und Verantwortung übernehmen.</blockquote>
@@ -63,18 +66,18 @@
     </main>
   </div>
 
-  <dialog id="facilitatorDialog">
+  <dialog id="facilitatorDialog" aria-labelledby="facilitatorHeading">
     <form method="dialog" class="dialog-inner">
       <div class="section-title-row">
-        <h2>Spielleitung</h2>
+        <h2 id="facilitatorHeading">Spielleitung</h2>
         <button value="close" class="ghost" aria-label="Spielleiter-Modus schließen">Schließen</button>
       </div>
       <div id="pinGate">
         <p>Der PIN ist nur Sichtschutz während der Veranstaltung.</p>
         <label for="facilitatorPin">PIN</label>
-        <input id="facilitatorPin" type="password" inputmode="numeric" placeholder="1984">
+        <input id="facilitatorPin" type="password" inputmode="numeric" placeholder="1984" autocomplete="off">
         <button id="unlockFacilitatorButton" type="button" class="primary">Freischalten</button>
-        <p id="pinFeedback" class="feedback" aria-live="polite"></p>
+        <p id="pinFeedback" class="feedback" role="alert" aria-live="assertive"></p>
       </div>
       <div id="facilitatorPanel" class="hidden"></div>
     </form>

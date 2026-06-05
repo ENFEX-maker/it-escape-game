@@ -133,6 +133,9 @@ function renderStationList() {
     button.type = "button";
     button.className = `station-card ${unlocked ? "unlocked" : "locked"} ${solved ? "solved" : ""} ${state.currentStationId === station.id ? "active" : ""}`;
     button.disabled = !unlocked && !solved;
+    const statusLabel = solved ? "gelöst" : unlocked ? "verfügbar" : "gesperrt";
+    const stationLabel = station.path === "bonus" ? "Bonusstation" : `Station ${station.order}`;
+    button.setAttribute("aria-label", `${stationLabel}: ${station.title}. Thema: ${station.topic}. ca. ${station.estimatedMinutes} Minuten. Status: ${statusLabel}.`);
     button.innerHTML = `
       <span class="badge ${solved ? "success" : station.path === "bonus" ? "warning" : ""}">${solved ? "Gelöst" : station.path === "bonus" ? "Bonus" : `Station ${station.order}`}</span>
       <strong>${station.title}</strong>
@@ -181,7 +184,6 @@ function renderStation(stationId) {
   renderStationList();
 
   const shownHints = state.shownHints[station.id] || 0;
-  const hints = data.hints[station.id] || [];
   const solved = isSolved(station.id);
   const detail = $("#stationDetail");
   detail.innerHTML = `
@@ -200,11 +202,11 @@ function renderStation(stationId) {
     <div class="code-check">
       <label>
         <span class="sr-only">Dreistelliger Code</span>
-        <input id="codeInput" type="text" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" placeholder="___" ${solved ? "disabled" : ""}>
+        <input id="codeInput" type="text" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" placeholder="___" aria-describedby="codeFeedback" ${solved ? "disabled" : ""}>
       </label>
       <button type="button" data-action="check" class="primary" ${solved ? "disabled" : ""}>Code prüfen</button>
     </div>
-    <p id="codeFeedback" class="feedback ${solved ? "ok" : ""}">${solved ? "Code akzeptiert. Schloss geöffnet." : ""}</p>
+    <p id="codeFeedback" class="feedback ${solved ? "ok" : ""}" role="status">${solved ? "Code akzeptiert. Schloss geöffnet." : ""}</p>
     ${solved ? `<blockquote><strong>Lernpunkt:</strong> ${escapeHtml(station.learningPoint)}<br><strong>Berufsbezug:</strong> ${escapeHtml(station.careerLink)}</blockquote>` : ""}
   `;
   detail.querySelector('[data-action="audio"]').addEventListener("click", () => playAudio(station.audio));
@@ -240,6 +242,7 @@ function checkCode(stationId) {
   const feedback = $("#codeFeedback");
   const value = (input.value || "").trim();
   if (value === station.code) {
+    input.setAttribute("aria-invalid", "false");
     if (!state.solved.includes(stationId)) state.solved.push(stationId);
     feedback.textContent = "Code akzeptiert. Schloss geöffnet. Weiter zur nächsten Station.";
     feedback.className = "feedback ok";
@@ -247,6 +250,7 @@ function checkCode(stationId) {
     renderStationList();
     window.setTimeout(() => renderStation(stationId), 350);
   } else {
+    input.setAttribute("aria-invalid", "true");
     feedback.textContent = "Der Code passt noch nicht. Prüft eure Zwischenergebnisse und nutzt bei Bedarf einen Hinweis.";
     feedback.className = "feedback error";
   }
