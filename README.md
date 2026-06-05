@@ -65,6 +65,18 @@ cd /root/projects/it-escape-game
 node tests/smoke-check.mjs
 ```
 
+## Audio neu generieren
+
+Die App erwartet MP3-Dateien unter `public/audio/` mit den Dateinamen aus `src/data/audio.json`.
+Für hochwertige deutsche Sprecher*innenstimmen kann das ElevenLabs-Skript genutzt werden:
+
+```bash
+cd /root/projects/it-escape-game
+python3 scripts/generate-elevenlabs-audio.py
+```
+
+Voraussetzung ist `ELEVENLABS_API_KEY` in `/root/.hermes/.env`. Das Skript nutzt `eleven_v3` und überschreibt die vorhandenen MP3-Dateien mit denselben Namen.
+
 ## Cursor-Übergabe
 
 Für die Weiterarbeit in Cursor siehe:
