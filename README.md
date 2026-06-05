@@ -35,14 +35,24 @@ Dieses Spiel ist ein firmeneigenes Lern- und Berufsorientierungsangebot. Es ist 
 
 Es werden keine BSI-Originaltexte, BSI-Grafiken, BSI-Logos oder BSI-PDF-Inhalte verwendet.
 
-## Lokaler Start
+## Aktuelle VPS-Preview
+
+Die Preview läuft hinter Nginx Proxy Manager und Authelia:
+
+```text
+https://preview.example.com/
+```
+
+Diese Subdomain wird aktuell als geschützte Vorschau für das Escape-Game genutzt.
+
+## Lokaler Start auf dem VPS
 
 ```bash
 cd /root/projects/it-escape-game
 python3 -m http.server 8080
 ```
 
-Dann öffnen:
+Dann über SSH-Portforwarding oder direkt auf dem VPS öffnen:
 
 ```text
 http://127.0.0.1:8080/src/
